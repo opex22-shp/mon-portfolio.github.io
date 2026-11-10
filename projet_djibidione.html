@@ -27,12 +27,6 @@
       font-size: 1.0625rem;
       line-height: 1.65;
     }
-    body::before {
-      content: "";
-      display: block;
-      height: 6px;
-      background: linear-gradient(90deg, #2B6CB0, #2D9C8A, #F2C94C, #E8833A, #C8372D);
-    }
     a { color: var(--mangrove); }
     a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
     .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
@@ -135,7 +129,7 @@
 
     <!-- Tu peux ajouter ou supprimer des sections selon tes besoins (ex: Limites, Outils) -->
     <section>
-      <h2>Outils et méthodes</h2>
+      <h2>Outils et limites</h2>
       <p>ArcMap (Spatial Analyst, Raster Calculator, Weighted Overlay), USGS EarthExplorer, Copernicus Data Space Ecosystem.</p>
       <p>La résolution spatiale des images historiques Landsat (30m) a nécessité un rééchantillonnage (Resample) pour être alignée sur la résolution de Sentinel-2 (10m), ce qui peut entraîner une légère perte de précision sur les bordures de parcelles pour l'année 2015.
          De plus, le modèle ne prend pas encore en compte la propriété foncière ni les zones protégées, qui devront être intégrées en amont des travaux pour respecter les usages locaux.</p>
