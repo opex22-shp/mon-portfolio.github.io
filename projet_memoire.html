@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mémoire - Vulnérabilité climatique et santé | Almamy Sagna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fond: #F3F6F4;
+      --encre: #12343B;
+      --texte: #2B3F44;
+      --mangrove: #2D6A4F;
+      --chaleur: #C8372D;
+      --filet: #CBD8D3;
+      --titre: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --corps: "Figtree", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: var(--corps);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+    a { color: var(--mangrove); }
+    a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
+    .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .retour { display: inline-block; margin: 28px 0 0; }
+    h1 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--encre);
+      margin: 24px 0 12px;
+    }
+    .sous-titre {
+      font-family: var(--titre);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--mangrove);
+      margin: 0 0 32px;
+    }
+    section { padding: 32px 0; border-top: 1px solid var(--filet); }
+    h2 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--encre);
+      margin: 0 0 16px;
+    }
+    h3 {
+      font-family: var(--titre);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--encre);
+      margin: 24px 0 8px;
+    }
+    p { max-width: 42em; margin: 0 0 14px; }
+    
+    /* Styles pour la galerie de cartes */
+    .grille-cartes {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .carte-item {
+      border: 1px solid var(--filet);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+      transition: box-shadow 0.2s;
+    }
+    .carte-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .carte-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid var(--filet);
+    }
+    .carte-texte {
+      padding: 16px;
+    }
+    .carte-texte h4 {
+      margin: 0 0 6px 0;
+      font-family: var(--titre);
+      font-size: 1rem;
+      color: var(--encre);
+    }
+    .carte-texte p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--gris-texte);
+    }
+    
+    .bouton {
+      display: inline-block;
+      background: var(--encre);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+      margin-top: 16px;
+    }
+    .bouton:hover { background: var(--chaleur); }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--filet); }
+  </style>
+</head>
+<body>
+  <main class="conteneur">
+
+    <a class="retour" href="index.html">← Retour à l’accueil</a>
+
+    <h1>Vulnérabilité au changement climatique et résilience du système de santé</h1>
+    <p class="sous-titre">Mémoire de Master en Géographie, UCAD. Analyse spatiale et cartographie.</p>
+
+    <section>
+      <h2>Le mémoire</h2>
+      <p>Ce travail étudie la vulnérabilité au changement climatique et la résilience du système de santé à Ziguinchor, dans le cadre du Master en Géographie (spécialité Environnement, Territoire, Population et Santé).</p>
+      <p>Il comprend une analyse spatiale de l'évolution de l'occupation du sol en 2005, 2015 et 2025, d'une carte d'accéssibilité et d'une carte des ilots de chaleur réalisées à partir d'images Landsat et de classifications supervisées.</p>
+    </section>
+
+    <section>
+      <h2>Cartes</h2>
+      <p>Cliquez sur une carte pour l'ouvrir en grand dans un nouvel onglet.</p>
+
+      <div class="grille-cartes">
+
+        <!-- Carte 1 -->
+        <a href="ODS_ZIG_2005.jpg" target="_blank" rel="noopener" class="carte-item">
+          <img src="ODS_ZIG_2005.jpg" alt="Occupation du sol en 2005" loading="lazy">
+          <div class="carte-texte">
+            <h4>Occupation du sol en 2005</h4>
+            <p>Classification supervisée d'images Landsat 8/9.</p>
+          </div>
+        </a>
+
+        <!-- Carte 2 -->
+        <a href="ODS_ZIG_2015.jpg" target="_blank" rel="noopener" class="carte-item">
+          <img src="ODS_ZIG_2015.jpg" alt="Occupation du sol en 2015" loading="lazy">
+          <div class="carte-texte">
+            <h4>Occupation du sol en 2015</h4>
+            <p>Classification supervisée d'images Landsat 8/9.</p>
+          </div>
+        </a>
+
+        <!-- Carte 3 -->
+        <a href="ODS_ZIG_2025_2.jpg" target="_blank" rel="noopener" class="carte-item">
+          <img src="ODS_ZIG_2025_2.jpg" alt="Occupation du sol en 2025" loading="lazy">
+          <div class="carte-texte">
+            <h4>Occupation du sol en 2025</h4>
+            <p>Classification supervisée d'images Landsat 8/9.</p>
+          </div>
+        </a>
+
+        <!-- Carte 4 -->
+        <a href="ILC_ZIG.jpg" target="_blank" rel="noopener" class="carte-item">
+          <img src="ILC_ZIG.jpg" alt="Carte des îlots de chaleur 2026" loading="lazy">
+          <div class="carte-texte">
+            <h4>Carte des îlots de chaleur de la commune en 2026</h4>
+            <p>Carte réalisée avec les données satellitaires des températures de surface de Copernicus.</p>
+          </div>
+        </a>
+
+        <!-- Carte 5 -->
+        <a href="Acces_zig.jpg" target="_blank" rel="noopener" class="carte-item">
+          <img src="Acces_zig.jpg" alt="Mesures d'accessibilité aux postes de santé" loading="lazy">
+          <div class="carte-texte">
+            <h4>Mesures d'accessibilité aux postes de santé de la commune</h4>
+            <p>Méthode utilisée : Ndonky.A (2015), E2SFCA.</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="conteneur"><a href="index.html">← Retour à l’accueil</a></div>
+  </footer>
+</body>
+</html>
