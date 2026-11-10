@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZIG-RESILIENCE - Îlots de chaleur | Almamy Sagna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fond: #F3F6F4;
+      --encre: #12343B;
+      --texte: #2B3F44;
+      --mangrove: #2D6A4F;
+      --chaleur: #C8372D;
+      --filet: #CBD8D3;
+      --titre: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --corps: "Figtree", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: var(--corps);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+    body::before {
+      content: "";
+      display: block;
+      height: 6px;
+      background: linear-gradient(90deg, #2B6CB0, #2D9C8A, #F2C94C, #E8833A, #C8372D);
+    }
+    a { color: var(--mangrove); }
+    a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
+    .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .retour { display: inline-block; margin: 28px 0 0; }
+    h1 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--encre);
+      margin: 24px 0 12px;
+    }
+    .sous-titre {
+      font-family: var(--titre);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--mangrove);
+      margin: 0 0 32px;
+    }
+    /* Style ajouté pour l'encadré d'attention */
+    .alerte {
+      background-color: #FFF3CD;
+      border-left: 4px solid #FFC107;
+      padding: 16px;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      border-radius: 4px;
+    }
+    .boutons-projet {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    section { padding: 32px 0; border-top: 1px solid var(--filet); }
+    h2 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--encre);
+      margin: 0 0 16px;
+    }
+    p { max-width: 42em; margin: 0 0 14px; }
+    ul { max-width: 42em; padding-left: 1.2em; margin: 0; }
+    li { margin-bottom: 12px; }
+    li strong { font-family: var(--titre); font-weight: 500; color: var(--encre); }
+    figure { margin: 24px 0 0; }
+    figure img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--filet);
+      border-radius: 6px;
+    }
+    figcaption { max-width: 42em; margin-top: 8px; font-size: 0.95rem; }
+    .bouton {
+      display: inline-block;
+      background: var(--encre);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .bouton:hover { background: var(--chaleur); }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--filet); }
+  </style>
+</head>
+<body>
+  <main class="conteneur">
+
+    <a class="retour" href="index.html">← Retour à l’accueil</a>
+
+    <h1>ZIG-RESILIENCE</h1>
+    <p class="sous-titre">Un outil satellitaire pour décider où rafraîchir en priorité dans la ville de Ziguinchor</p>
+
+    <div class="alerte">
+      <strong>Point d'attention :</strong> à l'ouverture du site, veuillez patienter entre 30 secondes et 1 minute pour le chargement des éléments de la carte.
+    </div>
+
+    <!-- Remplace les # par les liens vers ton application et ton script -->
+    <div class="boutons-projet">
+      <a href="https://scrapping-restos.projects.earthengine.app/view/zigtemp-v2" class="bouton" target="_blank" rel="noopener">Ouvrir l'application</a>
+      <a href="ZIG_TEMP;js.txt" class="bouton" target="_blank" rel="noopener">Voir le script</a>
+    </div>
+
+    <section>
+      <h2>Contexte</h2>
+      <p>Projet réalisé pour le hackathon national « Du satellite à la solution », organisé par SENSAT. Notre équipe, KERAS, a été selectionné pour rejoindre les 10 dossiers finalistes parmi près d'une centaine de candidatures. Le jury a retenu un sujet original et utile, avec des résultats chiffrés intéressants.</p>
+      <p>À Ziguinchor, l'urbanisation remplace peu à peu la végétation par du bâti imperméable, ce qui accentue la chaleur de surface. Je n'ai pas identifié d'outil local qui indique aux collectivités où intervenir d'abord. ZIG-RESILIENCE répond à quatre questions : où la chaleur est la plus forte, pourquoi, qui y est exposé, et que faire en premier.</p>
+    </section>
+
+    <section>
+      <h2>Méthode</h2>
+      <p>Les images Landsat 8/9 et Sentinel-2 de mars à mai (2023 à 2026) sont traitées sous Google Earth Engine, puis résumées sur une grille de mailles de 200 m. Chaque maille reçoit un score de priorité de 0 à 100, qui combine la chaleur de surface, le manque de végétation, l'imperméabilisation et l'exposition des équipements sensibles, comme les écoles et les structures de santé.</p>
+      <p>Dans l'application, un clic sur une zone affiche le quartier, le score et des interventions suggérées : végétalisation, désimperméabilisation, ombrage. Le score est relatif à la ville : il classe les zones entre elles, il ne fixe pas de seuil de température.</p>
+    </section>
+
+    <section>
+      <h2>Résultats</h2>
+      <ul>
+        <li><strong>761 mailles</strong> analysées. 181 d'entre elles sont à priorité très élevée (score de 75 ou plus).</li>
+        <li><strong>19 écoles</strong> et <strong>17 structures de santé</strong> se trouvent dans ces zones prioritaires.</li>
+        <li><strong>Corrélation de −0,83</strong> entre la végétation (NDVI) et la température de surface : plus il y a de végétation, plus la surface est fraîche.</li>
+        <li><strong>Test exploratoire 2014-2016 / 2024-2026 :</strong> la température de surface a augmenté de 0,43 °C en moyenne là où la végétation a reculé, et baissé de 1,51 °C là où elle a augmenté. Les années n'ont pas la même météo : c'est une tendance, pas une mesure exacte.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Mon rôle</h2>
+      <ul>
+        <li><strong>Conception :</strong> choix de la question, de la méthode et du score de priorité.</li>
+        <li><strong>Traitement des données :</strong> calcul de la température de surface, de la végétation et du bâti sous Google Earth Engine, puis agrégation par mailles.</li>
+        <li><strong>Application interactive :</strong> carte, légende et fiche par zone avec le nom du quartier.</li>
+        <li><strong>Dossier de candidature :</strong> note de concept, résultats, sources et éléments de reproduction.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Données</h2>
+      <p>Landsat 8/9 (Collection 2, niveau 2) pour la température de surface, Sentinel-2 pour la végétation, ESA WorldCover 2021 pour les surfaces bâties et le masque de l'eau, OpenStreetMap et relevés locaux pour les équipements, et les limites des quartiers de Ziguinchor.</p>
+    </section>
+
+    <section>
+      <h2>Limites et suite</h2>
+      <p>Le canal thermique de Landsat a une résolution de 100 m : l'outil compare des quartiers, pas des bâtiments. Les résultats n'ont pas encore été validés sur le terrain.</p>
+      <p>Prochaines étapes : intégrer la population et les marchés, valider avec la mairie et les délégués de quartier, puis étendre la méthode à d'autres villes.</p>
+    </section>
+
+    <section>
+      <h2>Technologies</h2>
+      <p>Google Earth Engine (JavaScript), images Landsat 8/9 et Sentinel-2, application web Earth Engine.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="conteneur"><a href="index.html">← Retour à l’accueil</a></div>
+  </footer>
+</body>
+</html>
