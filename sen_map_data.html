@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEN MAP DATA - Plateforme cartographique | Almamy Sagna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fond: #F3F6F4;
+      --encre: #12343B;
+      --texte: #2B3F44;
+      --mangrove: #2D6A4F;
+      --chaleur: #C8372D;
+      --filet: #CBD8D3;
+      --titre: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --corps: "Figtree", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: var(--corps);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+    a { color: var(--mangrove); }
+    a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
+    .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .retour { display: inline-block; margin: 28px 0 0; }
+    h1 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--encre);
+      margin: 24px 0 12px;
+    }
+    .sous-titre {
+      font-family: var(--titre);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--mangrove);
+      margin: 0 0 32px;
+    }
+    .boutons-projet {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    section { padding: 32px 0; border-top: 1px solid var(--filet); }
+    h2 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--encre);
+      margin: 0 0 16px;
+    }
+    p { max-width: 42em; margin: 0 0 14px; }
+    ul { max-width: 42em; padding-left: 1.2em; margin: 0; }
+    li { margin-bottom: 12px; }
+    li strong { font-family: var(--titre); font-weight: 500; color: var(--encre); }
+    .bouton {
+      display: inline-block;
+      background: var(--encre);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .bouton:hover { background: var(--chaleur); }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--filet); }
+  </style>
+</head>
+<body>
+  <main class="conteneur">
+
+    <a class="retour" href="index.html">← Retour à l’accueil</a>
+
+    <h1>SEN MAP DATA</h1>
+    <p class="sous-titre">Plateforme cartographique interactive avec chatbot, construite sur les données du RGPH-5</p>
+
+    <!-- Remplace le # par le lien vers ton application -->
+    <div class="boutons-projet">
+      <a href="https://ansd-project.vercel.app/" class="bouton" target="_blank" rel="noopener">Ouvrir l'application</a>
+    </div>
+
+    <section>
+      <h2>Contexte</h2>
+      <p>Projet d'équipe réalisé dans le cadre du Challenge 20 ans de l'ANSD. L'objectif : rendre les données du RGPH-5 plus accessibles grâce à une plateforme cartographique interactive, accompagnée d'un chatbot pour faciliter les requêtes.</p>
+    </section>
+
+    <section>
+      <h2>Mon rôle</h2>
+      <ul>
+        <li><strong>Données géographiques :</strong> récupération et vérification des fichiers GeoJSON des régions administratives (geoBoundaries), avec contrôle de la licence d'usage pour s'assurer qu'elle est compatible avec la cession à l'ANSD.</li>
+        <li><strong>Contrôle de cohérence :</strong> vérification des géométries par rapport aux régions pilotes retenues, noms des régions et découpage administratif à jour.</li>
+        <li><strong>Benchmarking :</strong> analyse rapide des plateformes existantes (ANADS, Open Data Sénégal, GeoPortail National, Eurostat) sous l'angle de l'expérience utilisateur cartographique.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Données</h2>
+      <p>Données du RGPH-5 publiées en open data par l'ANSD, et limites administratives au format GeoJSON.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="conteneur"><a href="index.html">← Retour à l’accueil</a></div>
+  </footer>
+</body>
+</html>
