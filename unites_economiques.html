@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cartographie Unités économiques | Almamy Sagna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fond: #F3F6F4;
+      --encre: #12343B;
+      --texte: #2B3F44;
+      --mangrove: #2D6A4F;
+      --chaleur: #C8372D;
+      --filet: #CBD8D3;
+      --titre: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --corps: "Figtree", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: var(--corps);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+    a { color: var(--mangrove); }
+    a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
+    .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .retour { display: inline-block; margin: 28px 0 0; }
+    h1 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--encre);
+      margin: 24px 0 12px;
+    }
+    .sous-titre {
+      font-family: var(--titre);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--mangrove);
+      margin: 0 0 32px;
+    }
+    section { padding: 32px 0; border-top: 1px solid var(--filet); }
+    h2 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--encre);
+      margin: 0 0 16px;
+    }
+    p { max-width: 42em; margin: 0 0 14px; }
+    ul { max-width: 42em; padding-left: 1.2em; margin: 0; }
+    li { margin-bottom: 12px; }
+    li strong { font-family: var(--titre); font-weight: 500; color: var(--encre); }
+    
+    /* Styles pour les images */
+    figure { margin: 24px 0 0; }
+    figure img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--filet);
+      border-radius: 6px;
+    }
+    figcaption { max-width: 42em; margin-top: 8px; font-size: 0.95rem; }
+    
+    /* Grille pour les 2 images QField */
+    .grille-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .grille-images { grid-template-columns: 1fr; }
+    }
+
+    .bouton {
+      display: inline-block;
+      background: var(--encre);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .bouton:hover { background: var(--chaleur); }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--filet); }
+  </style>
+</head>
+<body>
+  <main class="conteneur">
+
+    <a class="retour" href="index.html">← Retour à l’accueil</a>
+
+    <h1>Cartographie Unités économiques</h1>
+    <p class="sous-titre">De la collecte sur le terrain au contrôle qualité, puis à la carte</p>
+
+    <section>
+      <h2>Contexte et objectif</h2>
+      <p>Projet de collecte géoréférencée, réalisé au niveau de 3 quartiers dans le cadre de ma formation en cartographie à l'ANSD. L’objectif : relever les unités économiques avec un formulaire structuré, contrôler la qualité des données, puis produire une carte lisible des activités.</p>
+    </section>
+
+    <section>
+      <h2>Collecte</h2>
+      <p>J’ai conçu un formulaire dans QGIS avec QFieldSync, puis collecté sur le terrain avec QField sur un smartphone Android. Le formulaire compte dix champs : identifiant, date, enquêteur et précision GPS (remplis automatiquement), nom de l’unité, type d’activité, type de local et forme juridique (listes déroulantes), contact et observations.</p>
+      <p>Le nom et le type d’activité sont obligatoires : impossible de les oublier. Le fond de carte satellite était disponible hors ligne. J’ai relevé 21 unités économiques.</p>
+      
+      <!-- Grille pour les deux captures d'écran QField -->
+      <div class="grille-images">
+        <figure>
+          <img src="screen_qfield2.png" alt="Capture du formulaire QField avec les groupes Identification et Activité" loading="lazy">
+          <figcaption>Le formulaire de collecte dans QField.</figcaption>
+        </figure>
+        <figure>
+          <img src="screen_qfield3.png" alt="Capture du formulaire QField" loading="lazy">
+          <figcaption>Le formulaire de collecte dans QField.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>Contrôle qualité</h2>
+      <ul>
+        <li><strong>Sauvegarde:</strong> Copie du fichier brut avant tout traitement.</li>
+        <li><strong>Nettoyage:</strong> Suppression de 21 lignes vides, sans position ni donnée, créées par erreur.</li>
+        <li><strong>Cohérence:</strong> Aucun champ important vide et aucun doublon.</li>
+        <li><strong>Position:</strong> Vérification de chaque point sur l’image satellite, puis correction manuelle de 3 points légèrement décalés.</li>
+        <li><strong>Coordonnées:</strong> Calcul des colonnes longitude et latitude.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Résultats</h2>
+      <p>Une carte des 21 unités classées par type d’activité, avec des numéros et un tableau de correspondance, une légende, une échelle et les sources.</p>
+      
+      <figure>
+        <img src="Carte_unites_economiques.png" alt="Carte des 21 unités économiques du quartier, colorées par type d'activité" loading="lazy">
+        <figcaption>Carte des unités économiques relevées, classées par type d’activité.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Limites</h2>
+      <ul>
+        <li>Le GPS du téléphone était parfois éloigné des unités où je me trouvais : j’ai donc ajusté à la main la position de la plupart des points sur l’image satellite. La qualité de ces positions dépend de la netteté de l’image et de ma connaissance du terrain.</li>
+        <li>La précision GPS n’a été enregistrée que pour 6 points sur 21, de 0,5 à 38,8 m : elle ne mesure donc pas la qualité de l’ensemble. Je n’ai pas vérifié les positions avec un GPS plus précis. Les numéros de téléphone relevés ne sont pas publiés.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Outils</h2>
+      <p>QGIS, QFieldSync, QField, Esri World Imagery.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="conteneur"><a href="index.html">← Retour à l’accueil</a></div>
+  </footer>
+</body>
+</html>
