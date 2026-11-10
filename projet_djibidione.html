@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Potentiel de restauration agroforestière - Djibidione | Almamy Sagna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fond: #F3F6F4;
+      --encre: #12343B;
+      --texte: #2B3F44;
+      --mangrove: #2D6A4F;
+      --chaleur: #C8372D;
+      --filet: #CBD8D3;
+      --titre: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --corps: "Figtree", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: var(--corps);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+    body::before {
+      content: "";
+      display: block;
+      height: 6px;
+      background: linear-gradient(90deg, #2B6CB0, #2D9C8A, #F2C94C, #E8833A, #C8372D);
+    }
+    a { color: var(--mangrove); }
+    a:focus-visible { outline: 3px solid var(--chaleur); outline-offset: 3px; }
+    .conteneur { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .retour { display: inline-block; margin: 28px 0 0; }
+    h1 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--encre);
+      margin: 24px 0 12px;
+    }
+    .sous-titre {
+      font-family: var(--titre);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--mangrove);
+      margin: 0 0 32px;
+    }
+    section { padding: 32px 0; border-top: 1px solid var(--filet); }
+    h2 {
+      font-family: var(--titre);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--encre);
+      margin: 0 0 16px;
+    }
+    p { max-width: 42em; margin: 0 0 14px; }
+    ul { max-width: 42em; padding-left: 1.2em; margin: 0; }
+    li { margin-bottom: 12px; }
+    li strong { font-family: var(--titre); font-weight: 500; color: var(--encre); }
+    figure { margin: 24px 0 0; }
+    figure img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--filet);
+      border-radius: 6px;
+    }
+    figcaption { max-width: 42em; margin-top: 8px; font-size: 0.95rem; }
+    .bouton {
+      display: inline-block;
+      background: var(--encre);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .bouton:hover { background: var(--chaleur); }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--filet); }
+  </style>
+</head>
+<body>
+  <main class="conteneur">
+
+    <a class="retour" href="index.html">← Retour à l’accueil</a>
+
+    <h1>Potentiel de restauration agroferestière dans la commune de Djibidione</h1>
+    <p class="sous-titre">Télédétection et analyse multicritère sous ArcMap</p>
+
+    <section>
+      <h2>Contexte et objectif</h2>
+      J'ai réalisé une méthodologie d'aide à la décision pour identifier les zones prioritaires à restaurer. L'objectif est de fournir un outil cartographique permettant d'optimiser les campagnes de terrain (terrassement, demi-lunes, ensemencement) avant la saison des pluies.
+      L'étude s'est concentrée sur la commune de Djibidione, située dans le département de Bignona (Basse-Casamance). Ce choix est stratégique : cette zone frontalière avec la Gambie connaît un retour massif des populations après des années de conflit, entraînant une forte pression sur les ressources forestières (coupe de bois, feux de brousse) et une dégradation accélérée des terres agricoles, notamment par la salinisation des bas-fonds.
+    </section>
+
+    <section>
+      <h2>Méthodologie et Données</h2>
+      Le projet repose sur une analyse de la dynamique spatio-temporelle sur 10 ans (2015 - 2025), en croisant des données de télédétection gratuites et des facteurs biophysiques.
+      <ul> 
+       <li>Télédétection: Calcul de l'indice de végétation NDVI sur une image Landsat 8 (2015, 30m) et une image Sentinel-2 (2025, 10m) pour cartographier la perte de biomasse entre les deux dates (Dynamique du NDVI).</li> 
+       <li>Topographie: Utilisation du Modèle Numérique de Terrain (MNT SRTM à 30m) pour calculer la pente (en %). Cette donnée est cruciale pour la faisabilité technique des aménagements anti-érosifs.</li> 
+       <li>Analyse Multicritère: Après reclassification des indices (notes de 1 à 5), l'outil Weighted Overlay d'ArcMap a permis de fusionner les facteurs (70% de poids pour la dégradation de la végétation, 30% pour la pente) et de générer la carte finale du potentiel de restauration.</li> 
+       </ul>
+    </section>
+
+    <section>
+      <h2>Résultats et Livrables</h2>
+      La carte produite segmente le territoire de Djibidione en 5 niveaux de priorité. Les zones en rouge (Priorité critique) combinent une forte perte de végétation et une pente idéale (2 à 5%) pour la rétention d'eau. Ces zones sont directement exploitables par les équipes de Hommes et Terre pour planifier leurs chantiers avec les comités villageois.
+
+      Afin de rendre la carte opérationnelle sur le terrain, j'ai intégré le réseau routier et les villages, et basculé le système de coordonnées du cadre en Latitude/Longitude (GPS). Un décideur peut ainsi identifier visuellement une zone prioritaire à proximité d'un village et transmettre les coordonnées exactes aux équipes.
+      
+      <figure>
+        <!-- Remplace "images/projet1.png" par le nom exact de ton image sur GitHub -->
+        <img src="restauration_bignona.jpg" alt="Carte finale du projet" loading="lazy">
+        <figcaption>Carte finale du potentiel de restauration agroforestière de la commune de Djibidione.</figcaption>
+      </figure>
+
+      <figure>
+        <!-- Remplace "images/projet1.png" par le nom exact de ton image sur GitHub -->
+        <img src="" alt="Carte finale du projet" loading="lazy">
+        <figcaption>Workflow</figcaption>
+      </figure>
+      
+      <!-- Optionnel : Le bouton PDF (supprime ce bloc si tu n'as pas de PDF) -->
+    </section>
+
+    <!-- Tu peux ajouter ou supprimer des sections selon tes besoins (ex: Limites, Outils) -->
+    <section>
+      <h2>Outils et méthodes</h2>
+      <p>ArcMap (Spatial Analyst, Raster Calculator, Weighted Overlay), USGS EarthExplorer, Copernicus Data Space Ecosystem.</p>
+      <p>La résolution spatiale des images historiques Landsat (30m) a nécessité un rééchantillonnage (Resample) pour être alignée sur la résolution de Sentinel-2 (10m), ce qui peut entraîner une légère perte de précision sur les bordures de parcelles pour l'année 2015.
+         De plus, le modèle ne prend pas encore en compte la propriété foncière ni les zones protégées, qui devront être intégrées en amont des travaux pour respecter les usages locaux.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="conteneur"><a href="index.html">← Retour à l’accueil</a></div>
+  </footer>
+</body>
+</html>
