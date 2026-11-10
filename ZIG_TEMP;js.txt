@@ -1,0 +1,249 @@
+/*********************************************************************
+ SEN-COOL PRIORITY - Prototype Ziguinchor (Google Earth Engine)
+ Chaine : Landsat 8/9 (chaleur) -> Sentinel-2 (vegetation)
+          -> ESA WorldCover (bati) -> WorldPop (population)
+          -> equipements sensibles -> score de priorite -> panneau interactif
+ A coller dans https://code.earthengine.google.com
+*********************************************************************/
+
+// ===================== 0. PARAMETRES =====================
+var USE_EQUIP   = true;  // passer a true quand l'asset des equipements est pret (etape 4)
+var EQUIP_ASSET = 'projects/scrapping-restos/assets/equip_zig'; // champ 'type' = ecole | sante | marche
+var AOI_ASSET   = 'projects/scrapping-restos/assets/projet_SENSAT';     // ex: 'users/TON_COMPTE/commune_ziguinchor' (vide = rectangle par defaut)
+var GRID_SIZE   = 200;    // taille des mailles en metres (monter a 300 si "timeout")
+var MONTHS      = [3, 5]; // mars a mai : saison chaude et seche, peu de nuages
+var YEAR_START  = 2023, YEAR_END = 2026;
+var W = {heat: 0.25, veg: 0.25, imp: 0.25, expo: 0.25}; // poids du score (somme = 1)
+
+// ===================== 1. ZONE D'ETUDE =====================
+var aoi = AOI_ASSET !== ''
+  ? ee.FeatureCollection(AOI_ASSET).geometry()
+  : ee.Geometry.Rectangle([-16.31, 12.52, -16.22, 12.62]);
+Map.centerObject(aoi, 12);
+Map.addLayer(aoi, {color: '0000FF'}, "Zone d'etude", false, 0.4);
+
+// ===================== 2. CHALEUR : LANDSAT 8/9 =====================
+function maskL(img) {
+  var qa = img.select('QA_PIXEL');
+  var m = qa.bitwiseAnd(1 << 1).eq(0)   // nuage dilate
+    .and(qa.bitwiseAnd(1 << 2).eq(0))   // cirrus
+    .and(qa.bitwiseAnd(1 << 3).eq(0))   // nuage
+    .and(qa.bitwiseAnd(1 << 4).eq(0));  // ombre de nuage
+  return img.updateMask(m);
+}
+function prepL(img) {
+  var lst = img.select('ST_B10').multiply(0.00341802).add(149.0)
+    .subtract(273.15).rename('lst');                       // Kelvin -> degres C
+  var red = img.select('SR_B4').multiply(0.0000275).add(-0.2);
+  var nir = img.select('SR_B5').multiply(0.0000275).add(-0.2);
+  var ndvi = nir.subtract(red).divide(nir.add(red)).rename('ndvi_l');
+  return lst.addBands(ndvi);
+}
+function landsatCol(y0, y1) {
+  return ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+    .merge(ee.ImageCollection('LANDSAT/LC09/C02/T1_L2'))
+    .filterBounds(aoi)
+    .filterDate(y0 + '-01-01', y1 + '-12-31')
+    .filter(ee.Filter.calendarRange(MONTHS[0], MONTHS[1], 'month'))
+    .filter(ee.Filter.lt('CLOUD_COVER', 40))
+    .map(maskL).map(prepL);
+}
+function landsatComp(y0, y1) {
+  return landsatCol(y0, y1).median().clip(aoi);
+}
+print('Nb images Landsat (periode courante)', landsatCol(YEAR_START, YEAR_END).size());
+var lstNow = landsatComp(YEAR_START, YEAR_END).select('lst');
+
+// ===================== 3. VEGETATION, BATI, EAU =====================
+function maskS2(img) {
+  var scl = img.select('SCL');
+  var ok = scl.neq(3).and(scl.neq(8)).and(scl.neq(9)).and(scl.neq(10)).and(scl.neq(11));
+  return img.updateMask(ok);
+}
+var s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(aoi)
+  .filterDate(YEAR_START + '-01-01', YEAR_END + '-12-31')
+  .filter(ee.Filter.calendarRange(MONTHS[0], MONTHS[1], 'month'))
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 30))
+  .map(maskS2);
+print('Nb images Sentinel-2', s2.size());
+var s2c = s2.median().clip(aoi);
+var ndvi = s2c.normalizedDifference(['B8', 'B4']).rename('ndvi');
+
+var wc = ee.ImageCollection('ESA/WorldCover/v200').first().select('Map');
+var built = wc.eq(50).rename('built');   // classe 50 = zone baties
+var land  = wc.neq(80);                   // classe 80 = eau permanente (masquee)
+
+Map.addLayer(lstNow.updateMask(land),
+  {min: 28, max: 46, palette: ['2c7bb6', 'abd9e9', 'ffffbf', 'fdae61', 'd7191c']},
+  'LST (C)', false);
+Map.addLayer(ndvi.updateMask(land),
+  {min: 0, max: 0.8, palette: ['ffffff', 'ffff66', '1a9850']}, 'NDVI', false);
+Map.addLayer(built.selfMask(), {palette: ['555555']}, 'Bati', false);
+
+// ===================== 4. MAILLES + INDICATEURS =====================
+var grid = aoi.coveringGrid(ee.Projection('EPSG:32628'), GRID_SIZE);
+var stack = lstNow.addBands(ndvi).addBands(built).updateMask(land);
+
+var cells = stack.reduceRegions({
+  collection: grid, reducer: ee.Reducer.mean(), scale: 10, tileScale: 4
+}).filter(ee.Filter.notNull(['lst', 'ndvi', 'built']));
+
+// Population (WorldPop, estimation modelisee 2020)
+var pop = ee.ImageCollection('WorldPop/GP/100m/pop')
+  .filter(ee.Filter.eq('country', 'SEN'))
+  .filter(ee.Filter.eq('year', 2020))
+  .mosaic().select('population');
+cells = pop.reduceRegions({
+  collection: cells, reducer: ee.Reducer.sum().setOutputs(['pop']), scale: 100
+});
+
+// Equipements sensibles (ecoles, marches, structures de sante)
+if (USE_EQUIP) {
+  var equip = ee.FeatureCollection(EQUIP_ASSET);
+  cells = cells.map(function (c) {
+    var e = equip.filterBounds(c.geometry());
+    var n = function (t) { return e.filter(ee.Filter.eq('type', t)).size(); };
+    return c.set({ecole: n('education'), sante: n('sante'), marche: n('marche')});
+  });
+} else {
+  cells = cells.map(function (c) {
+    return c.set({ecole: 0, sante: 0, marche: 0});
+  });
+}
+cells = cells.map(function (c) {
+  var eq = ee.Number(c.get('ecole')).add(ee.Number(c.get('marche')))
+    .add(ee.Number(c.get('sante')).multiply(2));       // sante pondere x2
+  return c.set('equip', eq);
+});
+
+// Anomalie thermique = ecart a la moyenne des mailles de terre ferme
+var lstMean = ee.Number(cells.aggregate_mean('lst'));
+print('LST moyenne de la zone (C)', lstMean);
+cells = cells.map(function (c) {
+  return c.set('anom', ee.Number(c.get('lst')).subtract(lstMean));
+});
+
+// ===================== 5. SCORE DE PRIORITE =====================
+function rng(prop) {
+  var d = cells.reduceColumns(ee.Reducer.percentile([5, 95]), [prop]);
+  return {lo: ee.Number(d.get('p5')), hi: ee.Number(d.get('p95'))};
+}
+var R = {lst: rng('lst'), ndvi: rng('ndvi'), built: rng('built'),
+         pop: rng('pop'), equip: rng('equip')};
+function norm(c, prop, inv) {
+  var r = R[prop];
+  var n = ee.Number(c.get(prop)).subtract(r.lo)
+    .divide(r.hi.subtract(r.lo).max(1e-9)).max(0).min(1);
+  return inv ? ee.Number(1).subtract(n) : n;
+}
+var eqW = USE_EQUIP ? 0.5 : 0;
+var scored = cells.map(function (c) {
+  var heat = norm(c, 'lst', false);
+  var veg  = norm(c, 'ndvi', true);     // peu de vegetation = score eleve
+  var imp  = norm(c, 'built', false);
+  var expo = norm(c, 'pop', false).multiply(1 - eqW)
+    .add(norm(c, 'equip', false).multiply(eqW));
+  var score = heat.multiply(W.heat).add(veg.multiply(W.veg))
+    .add(imp.multiply(W.imp)).add(expo.multiply(W.expo)).multiply(100);
+  return c.set({n_heat: heat, n_veg: veg, n_imp: imp, n_expo: expo, score: score});
+});
+
+// ===================== 6. VERIFICATIONS (pour le dossier) =====================
+print('Nb de mailles', scored.size());
+print('Correlation NDVI / LST (attendu : negative)',
+  cells.reduceColumns(ee.Reducer.pearsonsCorrelation(), ['ndvi', 'lst']));
+print(ui.Chart.feature.byFeature(scored.limit(1500), 'ndvi', ['lst'])
+  .setChartType('ScatterChart')
+  .setOptions({title: 'LST vs NDVI (mailles de ' + GRID_SIZE + ' m)',
+    hAxis: {title: 'NDVI'}, vAxis: {title: 'LST (C)'},
+    pointSize: 2, legend: {position: 'none'}, trendlines: {0: {}}}));
+print('Top 10 zones prioritaires',
+  scored.sort('score', false).limit(10).select({
+    propertySelectors: ['score', 'lst', 'anom', 'ndvi', 'built', 'pop', 'ecole', 'sante', 'marche'],
+    retainGeometry: false}));
+    
+  // ===== Chiffres pour la question "impact final" =====
+var prioMax = scored.filter(ee.Filter.gte('score', 75));
+print('X - Mailles à priorité très élevée (score >= 75)', prioMax.size());
+print('Y - Population estimée dans ces mailles', ee.Number(prioMax.aggregate_sum('pop')).round());
+print('A - Écoles dans ces mailles', prioMax.aggregate_sum('ecole'));
+print('B - Structures de santé dans ces mailles', prioMax.aggregate_sum('sante'));
+print('C - Marchés dans ces mailles', prioMax.aggregate_sum('marche'));
+
+// ===================== 7. CARTE INTERACTIVE =====================
+var styled = scored.map(function (f) {
+  var s = ee.Number(f.get('score'));
+  var col = ee.Algorithms.If(s.gte(75), 'd73027',
+    ee.Algorithms.If(s.gte(50), 'fc8d59',
+    ee.Algorithms.If(s.gte(25), 'fee08b', '66bd63')));
+  return f.set('style', {color: col, fillColor: ee.String(col).cat('99'), width: 0.3});
+});
+Map.addLayer(styled.style({styleProperty: 'style'}), {}, 'Priorite de rafraichissement');
+
+var panel = ui.Panel({style: {position: 'bottom-left', width: '330px', padding: '8px'}});
+panel.add(ui.Label('Informations sur la zone', {fontWeight: 'bold', fontSize: '16px'}));
+var info = ui.Label('Clique sur une zone de la carte.', {whiteSpace: 'pre'});
+panel.add(info);
+Map.add(panel);
+
+var legend = ui.Panel({style: {position: 'bottom-right', padding: '6px'}});
+legend.add(ui.Label('Priorité', {fontWeight: 'bold'}));
+[['d73027', 'Très élevée (T°>= 75)'], ['fc8d59', 'Élevée  (T°50-75)'],
+ ['fee08b', 'Modérée (T°25-50)'], ['66bd63', 'Faible (T°< 25)']].forEach(function (x) {
+  legend.add(ui.Panel([
+    ui.Label('', {backgroundColor: '#' + x[0], padding: '8px', margin: '2px'}),
+    ui.Label(x[1], {margin: '4px'})], ui.Panel.Layout.Flow('horizontal')));
+});
+Map.add(legend);
+
+Map.onClick(function (coords) {
+  info.setValue('Chargement...');
+  var pt = ee.Geometry.Point([coords.lon, coords.lat]);
+  scored.filterBounds(pt).limit(1).evaluate(function (fc) {
+    if (!fc || fc.features.length === 0) { info.setValue('Aucune donnee ici.'); return; }
+    var p = fc.features[0].properties;
+    var lvl = p.score >= 75 ? 'TRES ELEVEE' : p.score >= 50 ? 'ELEVEE'
+            : p.score >= 25 ? 'MODEREE' : 'FAIBLE';
+    var rec = [];
+    if (p.n_veg >= 0.66) rec.push('- végétalisation');
+    if (p.n_imp >= 0.66) rec.push('- désimpermeabilisation / revêtements refléchissants');
+    if (p.n_heat >= 0.66 && (p.ecole + p.marche + p.sante) > 0) rec.push('- ombrage près des equipements');
+    if (rec.length === 0) rec.push('- surveillance');
+    info.setValue(
+      'PRIORITE : ' + lvl + ' (' + p.score.toFixed(0) + '/100)\n' +
+      'Température de surface : ' + p.lst.toFixed(1) + ' C\n' +
+      'Anomalie thermique : ' + (p.anom >= 0 ? '+' : '') + p.anom.toFixed(1) + ' C\n' +
+      'NDVI : ' + p.ndvi.toFixed(2) + ' | Bati : ' + (p.built * 100).toFixed(0) + ' %\n' +
+      'Population estimée : ' + Math.round(p.pop) + '\n' +
+      'Equipements : ' + p.ecole + ' école(s), ' + p.sante + ' structures sanitaires, ' + p.marche + ' marché(s)\n' +
+      'Interventions suggerées :\n' + rec.join('\n'));
+  });
+});
+
+// ===================== 8. TEST RETROSPECTIF (2014-2016 vs 2024-2026) =====================
+// Question : la ou la vegetation a recule, la temperature de surface a-t-elle augmente ?
+var before = landsatComp(2014, 2016);
+var after  = landsatComp(2024, 2026);
+var change = after.select('lst').subtract(before.select('lst')).rename('dlst')
+  .addBands(after.select('ndvi_l').subtract(before.select('ndvi_l')).rename('dndvi'))
+  .updateMask(land);
+var chg = change.reduceRegions({
+  collection: grid, reducer: ee.Reducer.mean(), scale: 30, tileScale: 4
+}).filter(ee.Filter.notNull(['dlst', 'dndvi']));
+print('Correlation dNDVI / dLST (attendu : negative)',
+  chg.reduceColumns(ee.Reducer.pearsonsCorrelation(), ['dndvi', 'dlst']));
+print('dLST moyen la ou le NDVI a recule (< -0.05)',
+  chg.filter(ee.Filter.lt('dndvi', -0.05)).aggregate_mean('dlst'));
+print('dLST moyen la ou le NDVI a augmente (> 0.02)',
+  chg.filter(ee.Filter.gt('dndvi', 0.02)).aggregate_mean('dlst'));
+print(ui.Chart.feature.byFeature(chg.limit(1500), 'dndvi', ['dlst'])
+  .setChartType('ScatterChart')
+  .setOptions({title: 'Variation de LST selon la variation de NDVI',
+    hAxis: {title: 'Delta NDVI'}, vAxis: {title: 'Delta LST (C)'},
+    pointSize: 2, legend: {position: 'none'}, trendlines: {0: {}}}));
+
+// ===================== 9. EXPORT (pour QGIS / figures du dossier) =====================
+Export.table.toDrive({
+  collection: scored, description: 'sen_cool_priority_mailles', fileFormat: 'GeoJSON'
+});
