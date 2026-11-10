@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almamy Sagna — Géographe spécialisé en SIG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== BARRE DE NAVIGATION ===================== -->
+  <header class="navbar">
+    <div class="conteneur nav-flex">
+      <a href="#accueil" class="logo">Almamy Sagna</a>
+      <nav>
+        <ul class="nav-liens">
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#competences">Compétences</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="CV_MonNom.pdf" class="btn-cv" target="_blank" rel="noopener">Télécharger mon CV</a></li>
+        </ul>
+      </nav>
+      <button class="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== SECTION HERO ===================== -->
+  <section id="accueil" class="hero">
+    <div class="conteneur hero-grid">
+      <div class="hero-texte">
+        <h1>Almamy Sagna</h1>
+        <p class="sous-titre">Géographe <span>|</span> Spécialiste SIG <span>
+        <p class="description-hero">
+          Étudiant en master 2 parcours Environnement-Territoire-Population-Santé et passionné par la géomatique, je conçois des cartes et des analyses spatiales pour comprendre et représenter les dynamiques territoriales.
+        </p>
+        <div class="hero-boutons">
+          <a href="#projets" class="btn btn-primaire">Découvrir mes projets</a>
+          <a href="CV_MonNom.pdf" class="btn btn-secondaire" target="_blank" rel="noopener">Télécharger mon CV</a>
+        </div>
+      </div>
+      <div class="hero-visuel">
+        <!-- Image décorative de carte ou de globe -->
+        <img src="images/hero-carte.jpg" alt="Illustration cartographique" onerror="this.style.display='none'">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION PROJETS ===================== -->
+  <section id="projets" class="projets">
+    <div class="conteneur">
+      <h2 class="titre-section">Mes projets cartographiques</h2>
+      <p class="intro-section">Une sélection de travaux en SIG, télédétection et analyse spatiale.</p>
+
+      <div class="grille-projets">
+
+        <!-- ========== PROJET 1 ========== -->
+        <article class="carte-projet">
+          <a href="projet-djibidione.html" class="lien-projet">
+            <div class="image-projet">
+              <img src="images/projet1.png" alt="Carte du potentiel de restauration" loading="lazy">
+              <!-- L'image ci-dessus doit être remplacée par ta carte de Djibidione -->
+            </div>
+            <div class="contenu-projet">
+              <span class="categorie">Télédétection & SIG</span>
+              <h3>Potentiel de restauration agroforestière</h3>
+              <p>Projet de cartographie des zones agroforestiers à prioriser en terme de restauration dans la commune de Djibidione commune du département de Bignona</p>
+              <ul class="tags">
+                <li>ArcMap</li>
+                <li>NDVI</li>
+                <li>Analyse multicritère</li>
+              </ul>
+            </div>
+          </a>
+        </article>
+
+        <!-- ========== PROJET 2 ========== -->
+        <article class="carte-projet">
+          <a href="projet2.html" class="lien-projet">
+            <div class="image-projet">
+              <img src="images/projet2.png" alt="Illustration projet 2" loading="lazy">
+            </div>
+            <div class="contenu-projet">
+              <span class="categorie">Application web interactive</span>
+              <h3>Zig-Résilience</h3>
+              <p>Réalisé dans le cadre du hackathon se SENSAT intitulé du "données à la satellite", ce projet a été parmi les 10 finaliste sur une centaine de candidatures. L'objectif été d'apporter des solutions à la forte chaleur constaté à Ziguinchor dans le cadre de mon mémoire.</p>
+              <ul class="tags">
+                <li>Google Earth Engine</li>
+                <li>OpenStreetMap</li>
+                <li>QGIS</li>
+              </ul>
+            </div>
+          </a>
+        </article>
+
+        <!-- ========== PROJET 3 ========== -->
+        <article class="carte-projet">
+          <a href="projet3.html" class="lien-projet">
+            <div class="image-projet">
+              <img src="images/projet3.png" alt="Illustration projet 3" loading="lazy">
+            </div>
+            <div class="contenu-projet">
+              <span class="categorie">Analyse spatiale</span>
+              <h3>Projet de mémoire de master 2</h3>
+              <p>Cartes réalisées dans le cadre de mon mémoire pour analyser les dynamiques terittoriales dans la commune de Ziguinchor et l'accéssibilité aux structures sanitaires.</p>
+              <ul class="tags">
+                <li>Arcmap</li>
+                <li>QGIS</li>
+                <li>Google Earth</li>
+              </ul>
+            </div>
+          </a>
+        </article>
+
+        <!-- ========== PROJET 4 ========== -->
+        <article class="carte-projet">
+          <a href="projet4.html" class="lien-projet">
+            <div class="image-projet">
+              <img src="images/projet4.png" alt="Illustration projet 4" loading="lazy">
+            </div>
+            <div class="contenu-projet">
+              <span class="categorie">Géoréférencement</span>
+              <h3>Cartographie des unités économiques dans les quartiers de Médina, Gueule-tapée, Reubeuss</h3>
+              <p>Collecte de données sur terrain de quelques unités économiques, traitement des données géospatiales, projections sur images satellitaires.</p>
+              <ul class="tags">
+                <li>GQIS</li>
+                <li>QFIELD</li>
+              </ul>
+            </div>
+          </a>
+        </article>
+
+        <!-- ========== PROJET 5 ========== -->
+        <article class="carte-projet">
+          <a href="projet5.html" class="lien-projet">
+            <div class="image-projet">
+              <img src="images/projet5.png" alt="Illustration projet 5" loading="lazy">
+            </div>
+            <div class="contenu-projet">
+              <span class="categorie"><!-- ÉCRIRE ICI : catégorie --></span>
+              <h3><!-- ÉCRIRE ICI : titre du projet --></h3>
+              <p><!-- ÉCRIRE ICI : description du projet --></p>
+              <ul class="tags">
+                <li><!-- Outil 1 --></li>
+                <li><!-- Outil 2 --></li>
+                <li><!-- Outil 3 --></li>
+              </ul>
+            </div>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION COMPÉTENCES ===================== -->
+  <section id="competences" class="competences">
+    <div class="conteneur">
+      <h2 class="titre-section">Compétences techniques</h2>
+      <div class="grille-competences">
+
+        <div class="bloc-competence">
+          <h3>SIG</h3>
+          <ul>
+            <li>QGIS</li>
+            <li>ArcGIS Pro</li>
+            <li>ArcMap</li>
+          </ul>
+        </div>
+
+        <div class="bloc-competence">
+          <h3>Télédétection</h3>
+          <ul>
+            <li>Google Earth Engine</li>
+            <li>Copernicus</li>
+            <li>Usgs Explorer</li>
+          </ul>
+        </div>
+
+        <div class="bloc-competence">
+          <h3>Cartographie</h3>
+          <ul>
+            <li>Cartographie thématique</li>
+            <li>Sémiologie graphique</li>
+            <li>Mise en page cartographique</li>
+          </ul>
+        </div>
+
+        <div class="bloc-competence">
+          <h3>Analyse spatiale</h3>
+          <ul>
+            <li>Analyse multicritère</li>
+            <li>Analyse raster et vectorielle</li>
+            <li>Géotraitement</li>
+          </ul>
+        </div>
+
+        <div class="bloc-competence">
+          <h3>Data science</h3>
+          <ul>
+            <li>Python</li>
+            <li>Pandas</li>
+            <li>Visualisation de données</li>
+            <li>Machine learning/ Deep learning</li>
+          </ul>
+        </div>
+
+        <div class="bloc-competence">
+          <h3>Bases de données géographiques</h3>
+          <ul>
+            <li>Gestion de données spatiales</li>
+            <li>Structuration et modélisation</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION À PROPOS ===================== -->
+  <section id="apropos" class="apropos">
+    <div class="conteneur">
+      <h2 class="titre-section">À propos</h2>
+      <p>Géographe spécialisé en SIG, je termine un Master en Géographie (Environnement, Territoire, Population et Santé) à l’UCAD. Mon mémoire porte sur la vulnérabilité au changement climatique et la résilience du système de santé à Ziguinchor.
+         J’ai travaillé comme prestataire à l’ANSD, où j’ai pratiqué la collecte de terrain et la cartographie. J’ai aussi participé à des projets comme SEN MAP DATA, une plateforme cartographique interactive basée sur les données du RGPH-5, et au hackathon SENSAT sur la chaleur urbaine. Je poursuis une formation en Data Science pour mieux analyser les données géospatiales.
+         Je veux mettre l’analyse spatiale et la donnée au service du climat, de l’environnement et de la santé, au sein d’ONG, d’organisations internationales ou du secteur privé. À terme, j’aimerais contribuer à la création d’un bureau régional de résilience climatique à Ziguinchor.
+         Centres d’intérêt: Géographie de la santé, climat et environnement, cartographie, télédétection, data science et aide à la décision. En dehors du travail, je pratique le judo.></p>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION CONTACT ===================== -->
+  <section id="contact" class="contact">
+    <div class="conteneur">
+      <h2 class="titre-section">Contact</h2>
+      <p class="intro-section">Discutons de vos projets géospatiaux.</p>
+      <ul class="liens-contact">
+        <li><a href="mailto:[TON EMAIL]">almamysagna59@gmail.com</a></li>
+        <li><a href="www.linkedin.com/in/almamy-sagna-box" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+      <a href="mailto:[TON EMAIL]" class="btn btn-primaire">M'écrire</a>
+    </div>
+  </section>
+
+  <!-- ===================== PIED DE PAGE ===================== -->
+  <footer>
+    <div class="conteneur">
+      <p>© <span id="annee"></span> Almamy Sagna — Portfolio professionel.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
